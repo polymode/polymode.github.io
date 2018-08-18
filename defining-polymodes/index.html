@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../favicon.ico">
+  
+  <title>Defining Polymodes - Polymode</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../css/extra.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Defining Polymodes";
+    var mkdocs_page_input_path = "defining-polymodes.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Polymode</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../usage/">Basic Usage</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Defining Polymodes</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#hosts-modes">Hosts Modes</a></li>
+    
+
+    <li class="toctree-l2"><a href="#inner-modes">Inner Modes</a></li>
+    
+
+    <li class="toctree-l2"><a href="#polymodes">Polymodes</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../internals/">For Developers</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../screenshots/">Screenshots</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../licence/">Licence</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Polymode</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Defining Polymodes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/emacs-polymode/polymode/edit/master/docs/defining-polymodes.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>Defining polymodes always starts by defining one host and at least one inner
+chunkmode.</p>
+<h2 id="hosts-modes">Hosts Modes</h2>
+<p>Here is an example of markdown host mode:</p>
+<pre><code class="el">
+(defcustom pm-host/markdown
+  (pm-host-chunkmode &quot;markdown&quot;
+                     :mode 'markdown-mode)
+  &quot;Markdown host chunkmode&quot;
+  :group 'hostmodes
+  :type 'object)
+
+</code></pre>
+
+<p>Here we call <code>pm-host-chunkmode</code>, the constructor of host chunkmodes, with the
+<code>:mode</code> parameter which should be the name of a valid emacs major mode function.
+In this case <code>markdown-mode</code>.</p>
+<p><em>Note: First argument in constructors is the name of the object. This name is
+used in various contexts for object identification</em>.</p>
+<h2 id="inner-modes">Inner Modes</h2>
+<p>Polymode defines two built-in types of inner chunkmodes, simple
+<code>pm-inner-chunkmode</code> which allows for one pre-specified mode and
+<code>pm-inner-auto-chunkmode</code> which detects the type of the chunk dynamically. </p>
+<p>This is an example of two markdown auto innermodes, one for fenced code and the
+other for inner code:</p>
+<pre><code class="el">
+(defcustom  pm-inner/markdown-fenced-code
+  (pm-inner-auto-chunkmode &quot;markdown-fenced-code&quot;
+                           :head-matcher &quot;^[ \t]*```[{ \t]*\\w.*$&quot;
+                           :tail-matcher &quot;^[ \t]*```[ \t]*$&quot;
+                           :mode-matcher (cons &quot;```[ \t]*{?\\(?:lang *= *\\)?\\([^ \t\n;=,}]+\\)&quot; 1))
+  &quot;Markdown fenced code block.&quot;
+  :group 'innermodes
+  :type 'object)
+
+(defcustom  pm-inner/markdown-inline-code
+  (pm-inner-auto-chunkmode &quot;markdown-inline-code&quot;
+                           :head-matcher (cons &quot;[^`]\\(`{?[[:alpha:]+-]+\\)[ \t]&quot; 1)
+                           :tail-matcher (cons &quot;[^`]\\(`\\)[^`]&quot; 1)
+                           :mode-matcher (cons &quot;`[ \t]*{?\\(?:lang *= *\\)?\\([[:alpha:]+-]+\\)&quot; 1)
+                           :head-mode 'host
+                           :tail-mode 'host)
+  &quot;Markdown inline code.&quot;
+  :group 'innermodes
+  :type 'object)
+
+</code></pre>
+
+<p>Here <code>:head-matcher</code> and <code>:tail-matcher</code> are regular expressions defining the
+head and the tail of the chunks. The <code>:mode-matcher</code> tells polymode how to
+retrieve the major mode from the head of the chunk. Each of the three marchers
+can be a regexp a cons of the form (REGEXP . SUBMATCH) or a function which
+should return the name of the mode.</p>
+<p><code>:head-mode</code> and <code>:tail-mode</code> specify the major mode which should be used for
+head and tail respectively. If it's a special symbol <code>'host</code> host mode is used
+instead, if <code>'body</code> the chunks body mode. It defaults to <code>poly-head-tail-mode</code>
+which is at the moment a very basic prog mode with no special powers.</p>
+<h2 id="polymodes">Polymodes</h2>
+<p>Finally, use the host and inner modes defined earlier to define the
+<code>poly-markdown-mode</code> polymode:</p>
+<pre><code class="el">(define-polymode poly-markdown-mode
+  :hostmode 'pm-host/markdown
+  :innermodes '(pm-inner/markdown-fenced-code
+                pm-inner/markdown-inline-code))
+</code></pre>
+
+<p><code>define-polymode</code> is similar to the standard Emacs utilities
+<code>define-derived-mode</code> and <code>define-minor-mode</code>. It accepts several optional
+arguments - <code>PARENT</code> polymode to be derived from, <code>DOC</code> string and <code>BODY</code> which
+is executed in host and every indirect buffer during the installation of the
+chunkmodes. <code>BODY</code> can be preceded by key-value pairs further refining the
+configuration. By far the most common keys are <code>:hostmode</code> specify the name of
+the <code>pm-host-chunkmode</code> object and <code>:innermodes</code> which is a list of names of
+<code>pm-inner-chunkmode</code> objects. See the documentation of <code>define-polymode</code> for
+further details.</p>
+<p>On a technical level polymode functions are more similar to minor-modes. In fact
+every <code>poly-NAME-mode</code> chunkmode buffer (base or indirect) will have
+<code>poly-NAME-mode</code> minor mode activated, thus acting like a UI "glue" between
+different chunks.</p>
+<p>When defining <code>poly-NAME-mode</code> 3 objects are created in the background:</p>
+<ul>
+<li><code>poly-NAME-mode</code> function which when can be used as major or minor mode</li>
+<li><code>poly-NAME-mode-map</code> keymap which inherits from <code>PARENT</code>'s polymode keymap
+    or <code>polymode-mode-map</code> if no <code>PARENT</code>.</li>
+<li><code>pm-poly/NAME</code> configuration object derived (cloned) from the <code>PARENT</code>'s
+    configuration object if <code>PARENT</code> is non-nil.</li>
+</ul>
+<p><code>poly-NAME-mode</code> will also run <code>poly-NAME-mode-hook</code> (and all parents' hooks) in
+every chunkmode buffer after the initialization of the chunkmode has been
+completed.</p>
+<p><code>PARENT</code> argument can also be a configuration object. When creation of polymodes
+for parent objects has little or no sense. For example <code>pm-poly/latex</code> is as
+parent of <code>pm-poly/noweb</code> but having a dedicated <code>poly-latex-mode</code> polymode has
+little sense.</p>
+<pre><code class="el">(defcustom pm-poly/latex
+  (pm-polymode &quot;latex&quot; :hostmode 'pm-host/latex)
+  &quot;LaTeX typical configuration.&quot;
+  :group 'polymodes
+  :type 'object)
+
+(define-polymode poly-noweb-mode pm-poly/latex
+  :innermodes '(pm-inner/noweb)
+  :keylist '((&quot;&lt;&quot; . poly-noweb-electric-&lt;)))
+
+</code></pre>
+
+<p>When name of <code>PARENT</code> matches the name of the polymode, <code>define-polymode</code> uses
+<code>PARENT</code> directly as the configuration object (i.e. no clone or <code>defcustom</code> is
+performed). Therefore, the above definition of <code>poly-noweb-mode</code> is essentially
+equivalent to the following:</p>
+<pre><code class="el">(defcustom pm-poly/noweb
+  (clone pm-poly/latex &quot;noweb&quot;
+         :innermodes '(pm-inner/noweb)
+         :keylist '((&quot;&lt;&quot; . poly-noweb-electric-&lt;)))
+  &quot;Noweb polymode configuration.&quot;
+  :group 'polymodes
+  :type 'object)
+
+(define-polymode poly-noweb-mode pm-poly/noweb)
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../internals/" class="btn btn-neutral float-right" title="For Developers">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../concepts/" class="btn btn-neutral" title="Concepts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright &copy; 2013-2018 Vitalie Spinu and contributors</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/emacs-polymode/polymode/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../concepts/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../internals/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

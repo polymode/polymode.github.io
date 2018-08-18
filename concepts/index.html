@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../favicon.ico">
+  
+  <title>Concepts - Polymode</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../css/extra.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Concepts";
+    var mkdocs_page_input_path = "concepts.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Polymode</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../usage/">Basic Usage</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Concepts</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#terminology">Terminology</a></li>
+    
+
+    <li class="toctree-l2"><a href="#configuration">Configuration</a></li>
+    
+
+    <li class="toctree-l2"><a href="#class-hierarchy">Class Hierarchy</a></li>
+    
+
+    <li class="toctree-l2"><a href="#naming-conventions">Naming Conventions</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../defining-polymodes/">Defining Polymodes</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../internals/">For Developers</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../screenshots/">Screenshots</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../licence/">Licence</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Polymode</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Concepts</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/emacs-polymode/polymode/edit/master/docs/concepts.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>Internally Polymode uses indirect buffers to implement inner spans of different
+modes. Each inner major mode within a polymode buffer has its own indirect
+buffer associated with it. Host mode lives in the base buffer. Therefore,
+switching modes in Polymode is as fast as switching emacs buffers because it
+never re-installs major modes like most of other MMM frameworks do. Dave Love's
+<a href="http://www.loveshack.ukfsn.org/emacs/multi-mode.el">multi-mode.el</a> gets full
+credit for this idea.</p>
+<h2 id="terminology">Terminology</h2>
+<ul>
+<li>
+<p><em><strong>span</strong></em> is a contiguous and functionally homogeneous region of text of the
+   same Emacs major mode. On functional grounds, there are 4 types of spans:
+   head, body, tail and host. In the above example there are 5 spans - org host,
+   elisp org header, elisp body, elisp org tail and org host.<br> All spans are
+   closed on the left and open on the right. For example, a span spanning [3, 5)
+   contains character at position 3 but not at position 5. This is consisten
+   with how emacs' functions dealing with text properties work.</p>
+</li>
+<li>
+<p><em><strong>chunk</strong></em> is a contiguous region that consists of one or more <em>spans</em>. There
+   are two major types of chunks:</p>
+<ul>
+<li><em><strong>host chunks</strong></em> which contain only one span - host mode, and </li>
+<li><em><strong>inner chunks</strong></em> which commonly consists of head, body and tail, where body
+  is of some other mode than host.<br></li>
+</ul>
+</li>
+<li>
+<p><em><strong>polymode</strong></em>, just like an emacs standard mode, means one of the following:</p>
+<ol>
+<li>an <em>generic term</em> for a collection of related functionality that is
+  available in emacs buffers</li>
+<li><em>function</em> which installs a bunch of functionality into emacs buffers.
+  Therefore, you can use polymodes just as any other emacs mode.<br></li>
+</ol>
+</li>
+</ul>
+<h2 id="configuration">Configuration</h2>
+<p>Host and inner chunks are configured through <em>objects</em> derived from
+<code>pm-chunkmode</code> class and are generally referred as "chunkmodes". These objects
+have named of the form <code>pm-host/NAME</code> and <code>pm-inner/NAME</code> and are grouped in
+<code>hostmodes</code> and <code>innermodes</code> customization groups respectively. During the
+initialization chunkmodes are cloned and stored in buffer local variable
+<code>pm/chunkmode.</code></p>
+<p>Polymodes are configured through <em>objects</em> of class <code>pm-polymode</code> which are
+named with <code>pm-poly/NAME</code> scheme where <code>NAME</code> is the root name of the polymode
+<code>poly-NAME-mode</code>. During initialization of the polymodes the <code>pm-poly/NAME</code>
+object is cloned and stored in a buffer-local variable <code>pm/polymode</code> which is
+common across all indirect buffers.</p>
+<p>It is worth pointing out the difference between <code>chunks</code> and <code>chunkmodes</code>.
+Chunks are fragments of text and there might be multiple chunks of the same mode
+within a buffer. In contrast, there is only one chunkmode of some type per
+buffer and all its chunks "share" the chunkmode. At any point of time, each
+chunkmode is attached to its own buffer (base or indirect) and one emacs major
+mode.</p>
+<h2 id="class-hierarchy">Class Hierarchy</h2>
+<p>Polymode package uses <code>eieio</code> to represent its objects. The root class for all
+polymode classes is <code>eieio-instance-inheritor</code> which provides prototype based
+inheritance. This means that objects instantiated from polymode classes can be
+cloned in order to dynamically create a hierarchy of customizable objects. There
+are a bunch of such objects already defined, you can check those in <code>polymodes</code>,
+<code>hostmodes</code> and <code>innermodes</code> customization groups.</p>
+<p>Current polymode class hierarchy:</p>
+<pre><code>  +--eieio-instance-inheritor
+       +--pm-root
+            +--pm-chunkmode
+            |    +--pm-inner-chunkmode
+            |    |    +--pm-inner-auto-chunkmode
+            |    +--pm-host-chunkmode
+            +--pm-polymode
+            +--pm-weaver
+            |    +--pm-shell-weaver
+            |    +--pm-callback-weaver
+            +--pm-exporter
+                 +--pm-shell-exporter
+                 +--pm-callback-exporter
+</code></pre>
+
+<p><em>Using Help with EIEIO:</em> Each <code>eieio</code> class has a corresponding constructor
+whose docstring contains a complete description of the class.</p>
+<h2 id="naming-conventions">Naming Conventions</h2>
+<p>User facing functionality is named with <code>polymode-</code> prefix. Polymodes are named
+with <code>poly-ROOT-NAME-mode</code> convention. Classes, methods and development API have
+<code>pm-</code> prefix. The three fundamental buffer-local objects available in all
+polymode buffers are <code>pm/polymode</code>, <code>pm/chunkmode</code> and <code>pm/type</code>.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../defining-polymodes/" class="btn btn-neutral float-right" title="Defining Polymodes">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../usage/" class="btn btn-neutral" title="Basic Usage"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright &copy; 2013-2018 Vitalie Spinu and contributors</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/emacs-polymode/polymode/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../usage/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../defining-polymodes/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
