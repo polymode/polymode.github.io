@@ -27,6 +27,7 @@
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/lisp.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -80,7 +81,7 @@
     <a class="current" href="./">For Developers</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#guidelines-for-major-mode-developers">Guidelines for Major Mode Developers</a></li>
+    <li class="toctree-l2"><a href="#major-modes-guidelines">Major Modes Guidelines</a></li>
     
 
     <li class="toctree-l2"><a href="#api">API</a></li>
@@ -143,18 +144,18 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="guidelines-for-major-mode-developers">Guidelines for Major Mode Developers</h2>
-<p>In order for major modes to work well with polimodes, major mode code should
-abide the following:</p>
+                <h2 id="major-modes-guidelines">Major Modes Guidelines</h2>
+<p>In order for major modes to work well with polimodes major modes should abide
+the following rules:</p>
 <ul>
-<li>Don't assume that the buffer is wide (aka no narrowing in place). If you
-    retrieve text-properties or access a point in a buffer, make sure it's
-    inside the accessible region of the buffer. Pay special attention to what
-    happens at <code>point-max</code>.</li>
-<li>Don't use <code>parse-partial-sexp</code>; use <code>syntax-ppss</code> instead.</li>
-<li>If your mode uses or defines some notion of a span, follow Emacs convention
-    for text properties and consider spans as [left closed and right open)
-    interval.</li>
+<li>Don't assume that there is no narrowing in place. If you retrieve
+    text-properties or access a point in a buffer, make sure it's inside the
+    accessible region of the buffer. Pay special attention to what happens at
+    <code>point-max</code>.</li>
+<li>Use <code>syntax-ppss</code> instead of <code>parse-partial-sexp</code>.</li>
+<li>If your mode uses or defines some notion of a span or chunk, follow Emacs
+    convention for text properties and consider spans as [left closed and right
+    open) intervals.</li>
 </ul>
 <h2 id="api">API</h2>
 <p>All API classes and methods are named with <code>pm-</code> prefix.</p>

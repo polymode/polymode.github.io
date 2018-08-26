@@ -27,6 +27,7 @@
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/lisp.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -65,11 +66,8 @@
 
     <li class="toctree-l2"><a href="#via-use-package">Via use-package</a></li>
     
-        <ul>
-        
-            <li><a class="toctree-l3" href="#manually">Manually</a></li>
-        
-        </ul>
+
+    <li class="toctree-l2"><a href="#manually">Manually</a></li>
     
 
     <li class="toctree-l2"><a href="#activation-of-polymodes">Activation of Polymodes</a></li>
@@ -178,7 +176,7 @@ and search for <code>poly-</code> prefix.</p>
 <p>For further configuration options with <code>use-package</code> see the official
 <a href="https://github.com/jwiegley/use-package">use-package repository</a> or <kbd>C-h v
 use-package [RET]</kbd>.</p>
-<h3 id="manually">Manually</h3>
+<h2 id="manually">Manually</h2>
 <pre><code class="sh">cd path/to/vc/dir
 git clone https://github.com/emacs-polymode/polymode
 git clone https://github.com/emacs-polymode/poly-markdown

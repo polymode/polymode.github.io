@@ -27,6 +27,7 @@
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/lisp.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -82,6 +83,12 @@
     
 
     <li class="toctree-l2"><a href="#polymodes">Polymodes</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#config-objects-as-parents">Config Objects as Parents</a></li>
+        
+        </ul>
     
 
     </ul>
@@ -153,15 +160,14 @@ inner chunkmode.</p>
 
 <p>Here we call the constructor of host chunkmode objects <code>pm-host-chunkmode</code> with
 the <code>:mode</code> parameter which should be a name (symbol) of a valid emacs major
-mode function. In this case <code>markdown-mode</code>.</p>
-<p><em><code>:object-name</code> is used in various contexts for object identification and
-informative messages.</em></p>
+mode function. In this case <code>markdown-mode</code>. </p>
+<p>The<code>:object-name</code> slot is used in various contexts for object identification and
+information messages.</p>
 <h2 id="inner-modes">Inner Modes</h2>
-<p>Polymode defines two built-in types of inner chunkmodes, simple
-<code>pm-inner-chunkmode</code> which allows for one pre-specified mode and
-<code>pm-inner-auto-chunkmode</code> which detects the type of the body span dynamically.</p>
-<p>This is an example of two markdown auto innermodes, one for fenced code and the
-other for inner code:</p>
+<p>Polymode defines two built-in types of inner chunkmodes - <code>pm-inner-chunkmode</code>
+which allows for one pre-specified mode and <code>pm-inner-auto-chunkmode</code> which
+detects the type of the body span dynamically.</p>
+<p>This is an example of two markdown auto innermodes:</p>
 <pre><code class="el">
 (defcustom  pm-inner/markdown-fenced-code
   (pm-inner-auto-chunkmode :object-name &quot;markdown-fenced-code&quot;
@@ -213,12 +219,12 @@ configuration. By far the most common keys are <code>:hostmode</code> specify th
 the <code>pm-host-chunkmode</code> object and <code>:innermodes</code> which is a list of names of
 <code>pm-inner-chunkmode</code> objects. See the documentation of <code>define-polymode</code> for
 further details.</p>
-<p>On a technical level polymode functions are more similar to minor-modes. In fact
-every <code>poly-NAME-mode</code> chunkmode buffer (base or indirect) will have
-<code>poly-NAME-mode</code> minor mode activated in order to provide the user with a "glue"
-between different chunks. If you want your commands to be available in all
-chunks bind them n <code>poly-NAME-mode-map</code> or directly in <code>poly-mode-map</code> which is
-the root map of all polymode maps.</p>
+<p>At the implementation level polymode functions are more similar to minor-modes
+than major modes. In fact every <code>poly-NAME-mode</code> chunkmode buffer (base or
+indirect) will have <code>poly-NAME-mode</code> minor mode activated in order to provide
+the "glue" interface between different chunks. If you want some commands to be
+available in all chunks bind them in <code>poly-NAME-mode-map</code> or directly in
+<code>poly-mode-map</code> which is the root map of all polymode maps.</p>
 <p>A call to <code>define-polymode</code> creates 3 objects in the background:</p>
 <ul>
 <li><code>poly-NAME-mode</code> function which when can be used as major or minor mode</li>
@@ -230,6 +236,7 @@ the root map of all polymode maps.</p>
 <p><code>poly-NAME-mode</code> will also run <code>poly-NAME-mode-hook</code> (and all parents' hooks) in
 every chunkmode buffer after the initialization of the chunkmode has been
 completed.</p>
+<h3 id="config-objects-as-parents">Config Objects as Parents</h3>
 <p><code>PARENT</code> argument can also be a configuration object. Sometimes creating of
 polymodes for parent objects has little or no sense. For example <code>pm-poly/latex</code>
 is as parent of <code>pm-poly/noweb</code> but having a dedicated <code>poly-latex-mode</code>
@@ -247,10 +254,11 @@ polymode has no sense.</p>
 
 </code></pre>
 
-<p><em>Note: In a special case when name of <code>PARENT</code> matches the name of the polymode,
-<code>PARENT</code> is used directly as the configuration object (i.e. no clone or
-<code>defcustom</code> is performed; it doesn't make sense). Therefore, the above
-definition of <code>poly-noweb-mode</code> is essentially equivalent to the following:</em></p>
+<p>In a special case when name of <code>PARENT</code> matches the name of the polymode,
+<code>PARENT</code> is used directly as the configuration object (no clone or <code>defcustom</code>
+is performed; it wouldn't make sense). Therefore, the above definition of
+<code>poly-noweb-mode</code> is equivalent to the following definition with an explicit
+<code>pm-poly/noweb</code> config:</p>
 <pre><code class="el">(defcustom pm-poly/noweb
   (clone pm-poly/latex &quot;noweb&quot;
          :innermodes '(pm-inner/noweb)
