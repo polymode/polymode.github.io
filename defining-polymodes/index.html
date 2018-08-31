@@ -150,7 +150,7 @@ inner chunkmode.</p>
 <p>Here is an example of markdown host mode:</p>
 <pre><code class="el">
 (defcustom pm-host/markdown
-  (pm-host-chunkmode :object-name &quot;markdown&quot;
+  (pm-host-chunkmode :name &quot;markdown&quot;
                      :mode 'markdown-mode)
   &quot;Markdown host chunkmode&quot;
   :group 'poly-host-modes
@@ -161,7 +161,7 @@ inner chunkmode.</p>
 <p>Here we call the constructor of host chunkmode objects <code>pm-host-chunkmode</code> with
 the <code>:mode</code> parameter which should be a name (symbol) of a valid emacs major
 mode function. In this case <code>markdown-mode</code>. </p>
-<p>The<code>:object-name</code> slot is used in various contexts for object identification and
+<p>The<code>:name</code> slot is used in various contexts for object identification and
 information messages.</p>
 <h2 id="inner-modes">Inner Modes</h2>
 <p>Polymode defines two built-in types of inner chunkmodes - <code>pm-inner-chunkmode</code>
@@ -170,7 +170,7 @@ detects the type of the body span dynamically.</p>
 <p>This is an example of two markdown auto innermodes:</p>
 <pre><code class="el">
 (defcustom  pm-inner/markdown-fenced-code
-  (pm-inner-auto-chunkmode :object-name &quot;markdown-fenced-code&quot;
+  (pm-inner-auto-chunkmode :name &quot;markdown-fenced-code&quot;
                            :head-matcher &quot;^[ \t]*```[{ \t]*\\w.*$&quot;
                            :tail-matcher &quot;^[ \t]*```[ \t]*$&quot;
                            :mode-matcher (cons &quot;```[ \t]*{?\\(?:lang *= *\\)?\\([^ \t\n;=,}]+\\)&quot; 1))
@@ -179,7 +179,7 @@ detects the type of the body span dynamically.</p>
   :type 'object)
 
 (defcustom  pm-inner/markdown-inline-code
-  (pm-inner-auto-chunkmode :object-name &quot;markdown-inline-code&quot;
+  (pm-inner-auto-chunkmode :name &quot;markdown-inline-code&quot;
                            :head-matcher (cons &quot;[^`]\\(`{?[[:alpha:]+-]+\\)[ \t]&quot; 1)
                            :tail-matcher (cons &quot;[^`]\\(`\\)[^`]&quot; 1)
                            :mode-matcher (cons &quot;`[ \t]*{?\\(?:lang *= *\\)?\\([[:alpha:]+-]+\\)&quot; 1)
@@ -242,7 +242,7 @@ polymodes for parent objects has little or no sense. For example <code>pm-poly/l
 is as parent of <code>pm-poly/noweb</code> but having a dedicated <code>poly-latex-mode</code>
 polymode has no sense.</p>
 <pre><code class="el">(defcustom pm-poly/latex
-  (pm-polymode :object-name &quot;latex&quot;
+  (pm-polymode :name &quot;latex&quot;
                :hostmode 'pm-host/latex)
   &quot;LaTeX typical configuration.&quot;
   :group 'polymodes

@@ -141,7 +141,7 @@
           <div role="main">
             <div class="section">
               
-                <p><em>Note: Polymode supports Emacs version is 25.1 or higher</em></p>
+                <p><em>!! Polymode required Emacs version 25.1 or higher!!</em></p>
 <h2 id="via-packageel">Via package.el</h2>
 <p>Polymode is available on the two major <code>package.el</code> community maintained repos -
 <a href="http://stable.melpa.org">MELPA Stable</a> and <a href="http://melpa.org">MELPA</a>.</p>
@@ -184,20 +184,20 @@ git clone https://github.com/emacs-polymode/poly-markdown
 </code></pre>
 
 <p>In <code>.emacs</code> add "polymode" directory and "polymode/modes" to the load path:</p>
-<pre><code class="lisp">(setq load-path
+<pre><code class="el">(setq load-path
       (append '(&quot;path/to/vc/dir/polymode/&quot;  &quot;path/to/vc/dir/poly-markdown/&quot;)
               load-path))
 </code></pre>
 
 <p>Require any polymode bundles that you are interested in. For example:</p>
-<pre><code class="lisp">(require 'poly-markdown)
+<pre><code class="el">(require 'poly-markdown)
 </code></pre>
 
 <h2 id="activation-of-polymodes">Activation of Polymodes</h2>
 <p>Polymodes are functions and can be used just like ordinary emacs modes.
 Particularly, activate them in files by either registering a file extension in
 <code>auto-mode-alist</code></p>
-<pre><code class="el">(add-to-list 'auto-mode-alist '(&quot;\\.mymd&quot; . poly-markdown-mode))
+<pre><code class="el">(add-to-list 'auto-mode-alist '(&quot;\\.md&quot; . poly-markdown-mode))
 </code></pre>
 
 <p>or by setting local major mode variable in the header of the file:</p>
