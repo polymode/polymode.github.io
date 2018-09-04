@@ -144,8 +144,8 @@
           <div role="main">
             <div class="section">
               
-                <p>Defining polymodes always starts by defining one host chunkmode and at least one
-inner chunkmode.</p>
+                <p>Defining polymodes always starts with defining one host chunkmode and at least
+one inner chunkmode.</p>
 <h2 id="hosts-modes">Hosts Modes</h2>
 <p>Here is an example of markdown host mode:</p>
 <pre><code class="el">
@@ -163,6 +163,9 @@ the <code>:mode</code> parameter which should be a name (symbol) of a valid emac
 mode function. In this case <code>markdown-mode</code>. </p>
 <p>The<code>:name</code> slot is used in various contexts for object identification and
 information messages.</p>
+<p>A wide range of hostmodes is already defined in the
+<a href="https://github.com/polymode/polymode/blob/master/polymode-base.el">polymode-base.el</a>
+file. Consider re-using or clonning those for your own polymodes.</p>
 <h2 id="inner-modes">Inner Modes</h2>
 <p>Polymode defines two built-in types of inner chunkmodes - <code>pm-inner-chunkmode</code>
 which allows for one pre-specified mode and <code>pm-inner-auto-chunkmode</code> which
@@ -237,10 +240,10 @@ available in all chunks bind them in <code>poly-NAME-mode-map</code> or directly
 every chunkmode buffer after the initialization of the chunkmode has been
 completed.</p>
 <h3 id="config-objects-as-parents">Config Objects as Parents</h3>
-<p><code>PARENT</code> argument can also be a configuration object. Sometimes creating of
-polymodes for parent objects has little or no sense. For example <code>pm-poly/latex</code>
-is as parent of <code>pm-poly/noweb</code> but having a dedicated <code>poly-latex-mode</code>
-polymode has no sense.</p>
+<p><code>PARENT</code> argument can also be a configuration object. Occasionally the creation
+of polymodes for parent objects has little or no sense. For example
+<code>pm-poly/latex</code> is as parent of <code>pm-poly/noweb</code> but having a dedicated
+<code>poly-latex-mode</code> polymode has no sense.</p>
 <pre><code class="el">(defcustom pm-poly/latex
   (pm-polymode :name &quot;latex&quot;
                :hostmode 'pm-host/latex)

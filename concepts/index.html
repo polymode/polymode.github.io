@@ -148,6 +148,8 @@ switching modes in Polymode is as fast as switching emacs buffers because it
 never re-installs major modes like most of other MMM frameworks do. Dave Love's
 <a href="http://www.loveshack.ukfsn.org/emacs/multi-mode.el">multi-mode.el</a> gets full
 credit for this idea.</p>
+<p>By <em>sibling buffers</em> we mean base or indirect buffers which are shared with the
+current buffer.</p>
 <h2 id="terminology">Terminology</h2>
 <ul>
 <li>
@@ -182,27 +184,25 @@ credit for this idea.</p>
 <p>Host and inner chunks are configured through <em>objects</em> derived from
 <code>pm-chunkmode</code> class and are generically referred to as "chunkmodes". These
 objects have named of the form <code>pm-host/NAME</code> and <code>pm-inner/NAME</code> and are
-grouped into <code>poly-hostmodes</code> and <code>poly-innermodes</code> customization groups
-respectively. During the initialization chunkmodes are cloned and stored in
-buffer local variable <code>pm/chunkmode.</code></p>
+collectively called <code>hostmodes</code> and <code>innermodes</code> respectively. These objects are
+configurable through the custom interface in <code>poly-hostmodes</code> and
+<code>poly-innermodes</code> customization groups.</p>
 <p>Polymodes are configured through <em>objects</em> of class <code>pm-polymode</code> which are
-named with <code>pm-poly/NAME</code> scheme where <code>NAME</code> is the root name of the polymode
-<code>poly-NAME-mode</code>. During initialization of the polymodes the <code>pm-poly/NAME</code>
-object is cloned and stored in a buffer-local variable <code>pm/polymode</code> which is
-common across all indirect buffers.</p>
+named with <code>pm-poly/NAME</code> scheme where <code>NAME</code> is the same as in the polymode
+function <code>poly-NAME-mode</code>. During initialization of the polymodes the
+<code>pm-poly/NAME</code> object is cloned and stored in a buffer-local variable
+<code>pm/polymode</code>. This object is shared common across all sibling buffers.</p>
 <p>It is worth pointing out the difference between <code>chunks</code> and <code>chunkmodes</code>.
 Chunks are fragments of text and there might be multiple chunks of the same mode
 within a buffer. In contrast, there is only one chunkmode of some type per
-buffer and all its chunks "share" the chunkmode. At any point of time, each
-chunkmode is attached to its own buffer (base or indirect) and one emacs major
-mode.</p>
+buffer and all its chunks "share" this chunkmode.</p>
 <h2 id="class-hierarchy">Class Hierarchy</h2>
 <p>Polymode package uses <code>eieio</code> to represent its objects. The root class for all
 polymode classes is <code>eieio-instance-inheritor</code> which provides prototype based
 inheritance. This means that objects instantiated from polymode classes can be
 cloned in order to dynamically create a hierarchy of customizable objects. There
 are a bunch of such objects already defined, you can check those in <code>polymodes</code>,
-<code>hostmodes</code> and <code>innermodes</code> customization groups.</p>
+<code>poly-hostmodes</code> and <code>poly-innermodes</code> customization groups. </p>
 <p>Polymode class hierarchy:</p>
 <pre><code>  +--eieio-instance-inheritor
        +--pm-root
