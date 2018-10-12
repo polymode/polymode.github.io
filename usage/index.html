@@ -142,6 +142,11 @@
 (defaults to <kbd>M-n</kbd>). The <code>polymode-mode-map</code> is the parent of all
 polymodes' maps.</p>
 <h2 id="navigation">Navigation</h2>
+<p>All polymode navigation commands are "cycling commands" in the sense that they
+can be invoked repeatedly with the press of the basic keys. For example if the
+<code>polymode-minor-mode-map</code> is bound to the default <kbd>M-n</kbd> prefix, then
+the sequence <kbd>M-n C-n C-n C-p</kbd> will invoke <code>polymode-next-chunk</code> twice
+and <code>polymode-previous-chunk</code> twice.</p>
 <table>
 <thead>
 <tr>
@@ -187,7 +192,7 @@ polymodes' maps.</p>
 </tr>
 <tr>
 <td><kbd>M-m</kbd></td>
-<td>DWIM repeatedly mark or extend region (<code>polymode-mark-or-extend-chunk</code>)</td>
+<td>DWIM repeatedly mark or extend region (<code>polymode-mark-or-extend-chunk</code>, a "cycling" command)</td>
 </tr>
 </tbody>
 </table>
