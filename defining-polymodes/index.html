@@ -256,8 +256,9 @@ is performed, as that wouldn't make sense). Therefore, the above definition of
 <code>poly-noweb-mode</code> is equivalent to the following definition with an explicit
 <code>poly-noweb-polymode</code> config:</p>
 <pre><code class="el">(defvar poly-noweb-polymode
-  (clone pm-poly/latex &quot;noweb&quot;
-         :innermodes '(pm-inner/noweb)
+  (clone poly-latex-root-polymode
+         :name &quot;noweb&quot;
+         :innermodes '(poly-noweb-innermode)
          :keylist '((&quot;&lt;&quot; . poly-noweb-electric-&lt;)))
   &quot;Noweb polymode configuration.&quot;)
 
