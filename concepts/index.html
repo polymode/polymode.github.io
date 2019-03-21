@@ -80,7 +80,7 @@
     <li class="toctree-l2"><a href="#class-hierarchy">Class Hierarchy</a></li>
     
 
-    <li class="toctree-l2"><a href="#naming-conventions">Naming Conventions</a></li>
+    <li class="toctree-l2"><a href="#general-naming-conventions">General Naming Conventions</a></li>
     
 
     </ul>
@@ -153,56 +153,67 @@ current buffer.</p>
 <h2 id="terminology">Terminology</h2>
 <ul>
 <li>
-<p><em><strong>span</strong></em> is a contiguous and functionally homogeneous region of text of the
-   same Emacs major mode. On functional grounds, there are 4 types of spans:
-   head, body, tail and host. In the above example there are 5 spans - org host,
-   elisp org header, elisp body, elisp org tail and org host.<br> All spans are
-   closed on the left and open on the right. For example, a span spanning [3, 5)
-   contains character at position 3 but not at position 5. This is consisten
-   with how emacs' functions dealing with text properties work.</p>
+<p><em><strong>span</strong></em> is a contiguous and homogeneous region of text of the same Emacs
+   major mode. There are 4 types of spans: head, body, tail and host. <br> All
+   spans are closed on the left and open on the right. For example, a span
+   spanning [3, 5) contains character at position 3 but not at position 5. This
+   is consistent with how emacs' functions deal with text properties.</p>
 </li>
 <li>
 <p><em><strong>chunk</strong></em> is a contiguous region that consists of one or more <em>spans</em>. There
    are two major types of chunks:</p>
 <ul>
-<li><em><strong>host chunks</strong></em> which contain only one span - host mode, and </li>
-<li><em><strong>inner chunks</strong></em> which commonly consists of head, body and tail, where body
-  is of some other mode than host.<br></li>
+<li><em><strong>host chunks</strong></em> which contain only one span in the host major mode.</li>
+<li><em><strong>inner chunks</strong></em> which commonly consists of head, body and tail, where
+  body is of some other mode than host.<br></li>
 </ul>
 </li>
 <li>
-<p><em><strong>polymode</strong></em>, just like an emacs standard mode, means one of the following:</p>
+<p><em><strong>polymode</strong></em> means one of the following:</p>
 <ol>
-<li>an <em>generic term</em> for a collection of related functionality that is
-  available in emacs buffers</li>
-<li><em>function</em> which installs a bunch of functionality into emacs buffers.
-  Therefore, you can use polymodes just as any other emacs mode.<br></li>
+<li><em>generic</em> collection of related functionality that is available in emacs
+  buffers</li>
+<li><em>function</em> which installs a bunch of functionality into emacs
+  buffers. Polymodes can be used like any other emacs major mode (for
+  example place in <code>auto-mode-alist</code>), or like a minor mode to install
+  functionality on top of existing mode.<br></li>
+<li>an <em>object</em> of class <code>pm-polymode</code> which holds the configuration for the
+   polymode.</li>
+</ol>
+</li>
+<li>
+<p><em><strong>chunkmode</strong></em>, and the more specific <em><strong>hostmode</strong></em> and <em><strong>innermode</strong></em> mean either:</p>
+<ol>
+<li><em>generic</em> collection of related functionality of host and inner chunks</li>
+<li>configuration <em>objects</em> derived from <code>pm-chunkmode</code> class
+   (<code>pm-host-chunkmode</code>, <code>pm-inner-innermode</code>, <code>pm-inner-auto-chunkmode</code>).</li>
 </ol>
 </li>
 </ul>
 <h2 id="configuration">Configuration</h2>
 <p>Host and inner chunks are configured through <em>objects</em> derived from
 <code>pm-chunkmode</code> class and are generically referred to as "chunkmodes". These
-objects have named of the form <code>pm-host/NAME</code> and <code>pm-inner/NAME</code> and are
-collectively called <code>hostmodes</code> and <code>innermodes</code> respectively. These objects are
-configurable through the custom interface in <code>poly-hostmodes</code> and
-<code>poly-innermodes</code> customization groups.</p>
+objects have named of the form <code>poly-NAME-hostmode</code> and <code>poly-NAME-innermode</code>
+and are refereed to as <code>hostmodes</code> and <code>innermodes</code> respectively.</p>
 <p>Polymodes are configured through <em>objects</em> of class <code>pm-polymode</code> which are
-named with <code>pm-poly/NAME</code> scheme where <code>NAME</code> is the same as in the polymode
-function <code>poly-NAME-mode</code>. During initialization of the polymodes the
-<code>pm-poly/NAME</code> object is cloned and stored in a buffer-local variable
-<code>pm/polymode</code>. This object is shared common across all sibling buffers.</p>
-<p>It is worth pointing out the difference between <code>chunks</code> and <code>chunkmodes</code>.
-Chunks are fragments of text and there might be multiple chunks of the same mode
-within a buffer. In contrast, there is only one chunkmode of some type per
-buffer and all its chunks "share" this chunkmode.</p>
+named with <code>poly-NAME-polymode</code> scheme where <code>NAME</code> is the same as in the
+polymode function <code>poly-NAME-mode</code>. During initialization of the polymodes the
+<code>poly-NAME-polymode</code> object is cloned and stored in a buffer-local variable
+<code>pm/polymode</code>. This object is shared across all sibling buffers.</p>
+<p><code>Chunks</code> and <code>chunkmodes</code> are different concepts. Chunk is a fragments of text
+and there might be multiple chunks of the same mode within a buffer. In
+contrast, there is only one chunkmode of some type per buffer and the "behavior"
+of the individual chunks is determined by this chunkmode.</p>
 <h2 id="class-hierarchy">Class Hierarchy</h2>
 <p>Polymode package uses <code>eieio</code> to represent its objects. The root class for all
 polymode classes is <code>eieio-instance-inheritor</code> which provides prototype based
 inheritance. This means that objects instantiated from polymode classes can be
-cloned in order to dynamically create a hierarchy of customizable objects. There
-are a bunch of such objects already defined, you can check those in <code>polymodes</code>,
-<code>poly-hostmodes</code> and <code>poly-innermodes</code> customization groups. </p>
+cloned in order to dynamically create a hierarchy of customizable objects. </p>
+<p>Instance inheritance (or prototype inheritance) means that if you change a slot
+of a parent object, all of the children and grand-children of the object will
+inherit the new value unless they explicitly overwrite that slot.</p>
+<p>There are a bunch of such objects already defined, you can check those in
+<code>polymodes</code>, <code>poly-hostmodes</code> and <code>poly-innermodes</code> customization groups.</p>
 <p>Polymode class hierarchy:</p>
 <pre><code>  +--eieio-instance-inheritor
        +--pm-root
@@ -221,11 +232,12 @@ are a bunch of such objects already defined, you can check those in <code>polymo
 
 <p><em>Using Help with EIEIO:</em> Each <code>eieio</code> class has a corresponding constructor
 whose docstring contains a complete description of the class.</p>
-<h2 id="naming-conventions">Naming Conventions</h2>
+<h2 id="general-naming-conventions">General Naming Conventions</h2>
 <p>User facing functionality is named with <code>polymode-</code> prefix. Polymodes are named
 with <code>poly-NAME-mode</code> convention. Host, inner and polymode configuration objects
-start with <code>pm-host/</code>, <code>pm-inner/</code> and <code>pm-poly/</code> prefixes
-respectively. Classes, methods and development API have <code>pm-</code> prefix.</p>
+are named <code>poly-NAME-hostmode</code>, <code>poly-NAME-innermode</code> and
+<code>poly-name-polymode</code>. Classes, methods and developer-oriented API have <code>pm-</code>
+prefix.</p>
               
             </div>
           </div>

@@ -144,73 +144,72 @@
           <div role="main">
             <div class="section">
               
-                <p>Defining polymodes always starts with defining one host chunkmode and at least
-one inner chunkmode.</p>
+                <p>Defining polymodes always starts with defining (or reusing) a hostmode and one
+or more innermodes.</p>
 <h2 id="hosts-modes">Hosts Modes</h2>
-<p>Here is an example of markdown host mode:</p>
+<p>Here is how the markdown hostmode is defined:</p>
 <pre><code class="el">
-(defcustom pm-host/markdown
-  (pm-host-chunkmode :name &quot;markdown&quot;
-                     :mode 'markdown-mode)
-  &quot;Markdown host chunkmode&quot;
-  :group 'poly-hostmodes
-  :type 'object)
+(define-hostmode poly-markdown-hostmode
+  :mode 'markdown-mode)
 
 </code></pre>
 
-<p>Here we call the constructor of host chunkmode objects <code>pm-host-chunkmode</code> with
-the <code>:mode</code> parameter which should be a name (symbol) of a valid emacs major
-mode function. In this case <code>markdown-mode</code>. </p>
-<p>The<code>:name</code> slot is used in various contexts for object identification and
-information messages.</p>
-<p>A wide range of hostmodes is already defined in the
+<p><code>define-hostmode</code> is a macro which, in this case, simply defines an object
+<code>poly-markdown-hostmode</code> of class <code>pm-host-chunkmode</code>. Keyword arguments are
+slots, of which the most important being <code>:mode</code> naming the emacs' major-mode
+which should be installed in host chunks.</p>
+<p>The optional second positional argument to <code>define-hostmode</code> is the parent
+hostmode. When provided the entire configuration of the parent is inherited by
+the child. A wide range of hostmodes is already defined in the
 <a href="https://github.com/polymode/polymode/blob/master/polymode-base.el">polymode-base.el</a>
-file. Consider re-using or clonning those for your own polymodes.</p>
+file. Please re-use those in your own polymodes.</p>
 <h2 id="inner-modes">Inner Modes</h2>
-<p>Polymode defines two built-in types of inner chunkmodes - <code>pm-inner-chunkmode</code>
-which allows for one pre-specified mode and <code>pm-inner-auto-chunkmode</code> which
-detects the type of the body span dynamically.</p>
-<p>This is an example of two markdown auto innermodes:</p>
+<p>Polymode defines two built-in types of innermodes - <code>pm-inner-chunkmode</code> which
+allows for one pre-specified in advance mode, and <code>pm-inner-auto-chunkmode</code>
+which detects the major mode of the body span on-the-fly.</p>
+<p>Here is an example of the YAML metadata innermode for markdown</p>
 <pre><code class="el">
-(defcustom  pm-inner/markdown-fenced-code
-  (pm-inner-auto-chunkmode :name &quot;markdown-fenced-code&quot;
-                           :head-matcher &quot;^[ \t]*```[{ \t]*\\w.*$&quot;
-                           :tail-matcher &quot;^[ \t]*```[ \t]*$&quot;
-                           :mode-matcher (cons &quot;```[ \t]*{?\\(?:lang *= *\\)?\\([^ \t\n;=,}]+\\)&quot; 1))
-  &quot;Markdown fenced code block.&quot;
-  :group 'poly-innermodes
-  :type 'object)
-
-(defcustom  pm-inner/markdown-inline-code
-  (pm-inner-auto-chunkmode :name &quot;markdown-inline-code&quot;
-                           :head-matcher (cons &quot;[^`]\\(`{?[[:alpha:]+-]+\\)[ \t]&quot; 1)
-                           :tail-matcher (cons &quot;[^`]\\(`\\)[^`]&quot; 1)
-                           :mode-matcher (cons &quot;`[ \t]*{?\\(?:lang *= *\\)?\\([[:alpha:]+-]+\\)&quot; 1)
-                           :head-mode 'host
-                           :tail-mode 'host)
-  &quot;Markdown inline code.&quot;
-  :group 'poly-innermodes
-  :type 'object)
+(define-innermode poly-markdown-yaml-metadata-innermode
+  :mode 'yaml-mode
+  :head-matcher &quot;\`[ \t\n]*---\n&quot;
+  :tail-matcher &quot;^---\n&quot;
+  :head-mode 'host
+  :tail-mode 'host)
 
 </code></pre>
 
-<p>Here <code>:head-matcher</code> and <code>:tail-matcher</code> are regular expressions used to search
-for heads and tails of inner code chunks. The <code>:mode-matcher</code> tells polymode how
-to retrieve the major mode from the head of the chunk. Each of the three
-marchers can be a regexp a cons of the form (REGEXP . SUBMATCH) or a function
-which should return the name of the mode.</p>
+<p>and a fenced-code auto innermode</p>
+<pre><code class="el">(define-auto-innermode poly-markdown-fenced-code-innermode
+  :head-matcher (cons &quot;^[ \t]*\\(```{?[[:alpha:]].*\n\\)&quot; 1)
+  :tail-matcher (cons &quot;^[ \t]*\\(```\\)[ \t]*$&quot; 1)
+  :mode-matcher (cons &quot;```[ \t]*{?\\(?:lang *= *\\)?\\([^ \t\n;=,}]+\\)&quot; 1)
+  :head-mode 'host
+  :tail-mode 'host)
+</code></pre>
+
+<p>In both of the examples <code>:head-matcher</code> and <code>:tail-matcher</code> are regular
+expressions patterns used to search for heads and tails of inner code
+chunks. The <code>:mode-matcher</code> tells polymode how to retrieve the major mode from
+the head of the chunk. Each of the three marchers can be a regexp, a cons of the
+form (REGEXP . SUBMATCH) or a function which should return the name of the mode.</p>
 <p><code>:head-mode</code> and <code>:tail-mode</code> specify the major mode which should be used for
 head and tail respectively. Special symbol <code>'host</code> means that the host mode is
-used for head or tail; if <code>'body</code> the chunk's body mode. Head and tail modes
-default to <code>poly-head-tail-mode</code> which is a very basic prog mode with no special
-powers.</p>
+used for head or tail, if <code>'body</code> - the mode of the chunk's body. Head and tail
+modes default to <code>poly-head-tail-mode</code> which is a very basic prog mode with no
+special powers.</p>
+<p>Buffer local <code>polymode-default-inner-mode</code> can be used to specify the default
+mode for body spans either for anonymous (aka mode-less) chunks or when the
+major mode cannot be identified. When this variable is nil (the default) either
+a host mode or a special <code>poly-fallback-mode</code> is installed. Which mode is
+installed depends on the value of <code>:mode</code> slot of the innermode configuration
+object.</p>
 <h2 id="polymodes">Polymodes</h2>
 <p>Finally, use the host and inner modes defined earlier to define the
 <code>poly-markdown-mode</code> polymode:</p>
 <pre><code class="el">(define-polymode poly-markdown-mode
   :hostmode 'pm-host/markdown
-  :innermodes '(pm-inner/markdown-fenced-code
-                pm-inner/markdown-inline-code))
+  :innermodes '(poly-markdown-yaml-metadata-innermode
+                pm-inner/markdown-fenced-code))
 </code></pre>
 
 <p><code>define-polymode</code> is similar to the standard Emacs utilities
@@ -218,59 +217,55 @@ powers.</p>
 arguments - <code>PARENT</code> polymode to be derived from, <code>DOC</code> string and <code>BODY</code> which
 is executed in host and every indirect buffer during the installation of the
 chunkmodes. <code>BODY</code> can be preceded by key-value pairs further refining the
-configuration. By far the most common keys are <code>:hostmode</code> specify the name of
-the <code>pm-host-chunkmode</code> object and <code>:innermodes</code> which is a list of names of
-<code>pm-inner-chunkmode</code> objects. See the documentation of <code>define-polymode</code> for
-further details.</p>
-<p>At the implementation level polymode functions are more similar to minor-modes
-than major modes. In fact every <code>poly-NAME-mode</code> chunkmode buffer (base or
-indirect) will have <code>poly-NAME-mode</code> minor mode activated in order to provide
-the "glue" interface between different chunks. If you want some commands to be
-available in all chunks bind them in <code>poly-NAME-mode-map</code> or directly in
-<code>poly-mode-map</code> which is the root map of all polymode maps.</p>
+configuration. By far the most common keys are <code>:hostmode</code> specify the name
+(symbol) of the <code>pm-host-chunkmode</code> object and <code>:innermodes</code> which is a list of
+names of <code>pm-inner-chunkmode</code> objects. See the documentation of
+<code>define-polymode</code> for further details.</p>
+<p>Polymode functions are more similar to minor-modes than major modes. Thus, you
+can call <code>(poly-NAME-mode t)</code> to install a polymode in emacs plain
+major-mode-hooks. Every <code>poly-NAME-mode</code> buffer (base or indirect) will have
+<code>poly-NAME-mode</code> minor mode activated in order to provide the "glue" interface
+between different chunks. If you want your commands to be available in all
+chunks bind them in <code>poly-NAME-mode-map</code> or directly in <code>poly-mode-map</code> which is
+the root map of all polymode maps.</p>
 <p>A call to <code>define-polymode</code> creates 3 objects in the background:</p>
 <ul>
-<li><code>poly-NAME-mode</code> function which when can be used as major or minor mode</li>
+<li><code>poly-NAME-mode</code> function which when can be used as major or minor mode.</li>
 <li><code>poly-NAME-mode-map</code> keymap which inherits from <code>PARENT</code>'s polymode keymap
-    or <code>polymode-mode-map</code> if no <code>PARENT</code> has been provided</li>
-<li><code>pm-poly/NAME</code> configuration object derived (cloned) from <code>pm-polymode</code>
-    object or the <code>PARENT</code>'s configuration object if <code>PARENT</code> has been provided</li>
+    or <code>polymode-mode-map</code> if no <code>PARENT</code> has been provided.</li>
+<li><code>poly-NAME-polymode</code> configuration object derived (cloned) from <code>pm-polymode</code>
+    object or the <code>PARENT</code>'s configuration object if <code>PARENT</code> has been provided.</li>
 </ul>
 <p><code>poly-NAME-mode</code> will also run <code>poly-NAME-mode-hook</code> (and all parents' hooks) in
 every chunkmode buffer after the initialization of the chunkmode has been
 completed.</p>
 <h3 id="config-objects-as-parents">Config Objects as Parents</h3>
-<p><code>PARENT</code> argument can also be a configuration object. Occasionally the creation
-of polymodes for parent objects has little or no sense. For example
-<code>pm-poly/latex</code> is as parent of <code>pm-poly/noweb</code> but having a dedicated
-<code>poly-latex-mode</code> polymode has no sense.</p>
-<pre><code class="el">(defcustom pm-poly/latex
-  (pm-polymode :name &quot;latex&quot;
-               :hostmode 'pm-host/latex)
-  &quot;LaTeX typical configuration.&quot;
-  :group 'polymodes
-  :type 'object)
+<p>On some occasions the creation of polymode functions for parent objects has
+little or no sense. For example <code>poly-latex-root-polymode</code> is as parent of
+<code>poly-noweb-polymode</code> but having a dedicated <code>poly-latex-mode</code> polymode has not
+much sense. For such cases <code>PARENT</code> argument of <code>define-polymode</code> can also be a
+configuration object.</p>
+<pre><code class="el">(defvar poly-latex-root-polymode
+  (pm-polymode :name &quot;latex&quot; :hostmode 'poly-latex-hostmode)
+  &quot;LaTeX root configuration.&quot;)
 
-(define-polymode poly-noweb-mode pm-poly/latex
+(define-polymode poly-noweb-mode poly-latex-root-polymode
   :innermodes '(pm-inner/noweb)
   :keylist '((&quot;&lt;&quot; . poly-noweb-electric-&lt;)))
-
 </code></pre>
 
 <p>In a special case when name of <code>PARENT</code> matches the name of the polymode,
 <code>PARENT</code> is used directly as the configuration object (no clone or <code>defcustom</code>
-is performed; it wouldn't make sense). Therefore, the above definition of
+is performed, as that wouldn't make sense). Therefore, the above definition of
 <code>poly-noweb-mode</code> is equivalent to the following definition with an explicit
-<code>pm-poly/noweb</code> config:</p>
-<pre><code class="el">(defcustom pm-poly/noweb
+<code>poly-noweb-polymode</code> config:</p>
+<pre><code class="el">(defvar poly-noweb-polymode
   (clone pm-poly/latex &quot;noweb&quot;
          :innermodes '(pm-inner/noweb)
          :keylist '((&quot;&lt;&quot; . poly-noweb-electric-&lt;)))
-  &quot;Noweb polymode configuration.&quot;
-  :group 'polymodes
-  :type 'object)
+  &quot;Noweb polymode configuration.&quot;)
 
-(define-polymode poly-noweb-mode pm-poly/noweb)
+(define-polymode poly-noweb-mode poly-noweb-polymode)
 </code></pre>
               
             </div>
