@@ -148,10 +148,8 @@
 or more innermodes.</p>
 <h2 id="hosts-modes">Hosts Modes</h2>
 <p>Here is how the markdown hostmode is defined:</p>
-<pre><code class="el">
-(define-hostmode poly-markdown-hostmode
+<pre><code class="el">(define-hostmode poly-markdown-hostmode
   :mode 'markdown-mode)
-
 </code></pre>
 
 <p><code>define-hostmode</code> is a macro which, in this case, simply defines an object
@@ -168,14 +166,12 @@ file. Please re-use those in your own polymodes.</p>
 allows for one pre-specified in advance mode, and <code>pm-inner-auto-chunkmode</code>
 which detects the major mode of the body span on-the-fly.</p>
 <p>Here is an example of the YAML metadata innermode for markdown</p>
-<pre><code class="el">
-(define-innermode poly-markdown-yaml-metadata-innermode
+<pre><code class="el">(define-innermode poly-markdown-yaml-metadata-innermode
   :mode 'yaml-mode
   :head-matcher &quot;\`[ \t\n]*---\n&quot;
   :tail-matcher &quot;^---\n&quot;
   :head-mode 'host
   :tail-mode 'host)
-
 </code></pre>
 
 <p>and a fenced-code auto innermode</p>
@@ -209,7 +205,7 @@ object.</p>
 <pre><code class="el">(define-polymode poly-markdown-mode
   :hostmode 'pm-host/markdown
   :innermodes '(poly-markdown-yaml-metadata-innermode
-                pm-inner/markdown-fenced-code))
+                poly-markdown-fenced-code-innermode))
 </code></pre>
 
 <p><code>define-polymode</code> is similar to the standard Emacs utilities
@@ -241,7 +237,7 @@ every chunkmode buffer after the initialization of the chunkmode has been
 completed.</p>
 <h3 id="config-objects-as-parents">Config Objects as Parents</h3>
 <p>On some occasions the creation of polymode functions for parent objects has
-little or no sense. For example <code>poly-latex-root-polymode</code> is as parent of
+little or no sense. For example <code>poly-latex-root-polymode</code> is a parent of the
 <code>poly-noweb-polymode</code> but having a dedicated <code>poly-latex-mode</code> polymode has not
 much sense. For such cases <code>PARENT</code> argument of <code>define-polymode</code> can also be a
 configuration object.</p>

@@ -171,12 +171,11 @@ current buffer.</p>
 <li>
 <p><em><strong>polymode</strong></em> means one of the following:</p>
 <ol>
-<li><em>generic</em> collection of related functionality that is available in emacs
-  buffers</li>
+<li>a <em>sum</em> of related functionality available in emacs buffers</li>
 <li><em>function</em> which installs a bunch of functionality into emacs
-  buffers. Polymodes can be used like any other emacs major mode (for
-  example place in <code>auto-mode-alist</code>), or like a minor mode to install
-  functionality on top of existing mode.<br></li>
+  buffers. <br> Polymodes can be used like any other emacs major mode (for
+  example placed in <code>auto-mode-alist</code>), or like a minor mode in order to
+  install functionality on top of an existing emacs mode.<br></li>
 <li>an <em>object</em> of class <code>pm-polymode</code> which holds the configuration for the
    polymode.</li>
 </ol>
@@ -184,9 +183,9 @@ current buffer.</p>
 <li>
 <p><em><strong>chunkmode</strong></em>, and the more specific <em><strong>hostmode</strong></em> and <em><strong>innermode</strong></em> mean either:</p>
 <ol>
-<li><em>generic</em> collection of related functionality of host and inner chunks</li>
+<li>a <em>sum</em>  of related functionality in host and inner chunks</li>
 <li>configuration <em>objects</em> derived from <code>pm-chunkmode</code> class
-   (<code>pm-host-chunkmode</code>, <code>pm-inner-innermode</code>, <code>pm-inner-auto-chunkmode</code>).</li>
+   (<code>pm-host-hostmode</code>, <code>pm-inner-innermode</code>, <code>pm-inner-auto-chunkmode</code>).</li>
 </ol>
 </li>
 </ul>
@@ -203,12 +202,12 @@ polymode function <code>poly-NAME-mode</code>. During initialization of the poly
 <p><code>Chunks</code> and <code>chunkmodes</code> are different concepts. Chunk is a fragments of text
 and there might be multiple chunks of the same mode within a buffer. In
 contrast, there is only one chunkmode of some type per buffer and the "behavior"
-of the individual chunks is determined by this chunkmode.</p>
+in each chunk is determined by the chunkmode.</p>
 <h2 id="class-hierarchy">Class Hierarchy</h2>
 <p>Polymode package uses <code>eieio</code> to represent its objects. The root class for all
 polymode classes is <code>eieio-instance-inheritor</code> which provides prototype based
 inheritance. This means that objects instantiated from polymode classes can be
-cloned in order to dynamically create a hierarchy of customizable objects. </p>
+cloned in order to dynamically create a hierarchy of customizable objects.</p>
 <p>Instance inheritance (or prototype inheritance) means that if you change a slot
 of a parent object, all of the children and grand-children of the object will
 inherit the new value unless they explicitly overwrite that slot.</p>
