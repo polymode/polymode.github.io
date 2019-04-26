@@ -220,20 +220,21 @@ names of <code>pm-inner-chunkmode</code> objects. See the documentation of
 <p>Most polymodes are designed to be used as major modes (i.e. in <code>auto-mode-alist</code>
 or buffer-local <code>mode:</code> cookie). Some polymodes (those with host's <code>:mode</code> slot
 set to <code>nil</code>) are explicitly designed to be used as minor modes.</p>
-<p>Internally, all polymode functions are in fact minor-modes. Every polymode
-buffer (base or indirect) will have <code>poly-NAME-mode</code> minor mode activated in
-order to provide the "glue" interface between different chunks. If you want your
-commands to be available in all chunks bind them in <code>poly-NAME-mode-map</code> or
-directly in <code>poly-mode-map</code> which is the root map of all polymode maps.</p>
+<p>Internally, all polymode functions are in fact minor-modes. Thus, you can, for
+example, toggle them with <code>M-x poly-XYZ-mode</code>. Every polymode buffer (base or
+indirect) will have this <code>poly-XYZ-mode</code> minor mode activated in order to
+provide the "glue" interface between different chunks. If you want your commands
+to be available in all chunks bind them in <code>poly-XYZ-mode-map</code> or directly in
+<code>poly-mode-map</code> which is the root map of all polymode maps.</p>
 <p>A call to <code>define-polymode</code> creates 3 objects in the background:</p>
 <ul>
-<li><code>poly-NAME-mode</code> function which when can be used as major or minor mode.</li>
-<li><code>poly-NAME-mode-map</code> keymap which inherits from <code>PARENT</code>'s polymode keymap
+<li><code>poly-XYZ-mode</code> function which when can be used as major or minor mode.</li>
+<li><code>poly-XYZ-mode-map</code> keymap which inherits from <code>PARENT</code>'s polymode keymap
     or <code>polymode-mode-map</code> if no <code>PARENT</code> has been provided.</li>
-<li><code>poly-NAME-polymode</code> configuration object derived (cloned) from <code>pm-polymode</code>
+<li><code>poly-XYZ-polymode</code> configuration object derived (cloned) from <code>pm-polymode</code>
     object or the <code>PARENT</code>'s configuration object if <code>PARENT</code> has been provided.</li>
 </ul>
-<p><code>poly-NAME-mode</code> will also run <code>poly-NAME-mode-hook</code> (and all parents' hooks) in
+<p><code>poly-XYZ-mode</code> will also run <code>poly-XYZ-mode-hook</code> (and all parents' hooks) in
 every chunkmode buffer after the initialization of the chunkmode has been
 completed.</p>
 <h3 id="config-objects-as-parents">Config Objects as Parents</h3>

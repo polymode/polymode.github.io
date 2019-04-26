@@ -192,12 +192,12 @@ current buffer.</p>
 <h2 id="configuration">Configuration</h2>
 <p>Host and inner chunks are configured through <em>objects</em> derived from
 <code>pm-chunkmode</code> class and are generically referred to as "chunkmodes". These
-objects have named of the form <code>poly-NAME-hostmode</code> and <code>poly-NAME-innermode</code>
+objects have named of the form <code>poly-XYZ-hostmode</code> and <code>poly-XYZ-innermode</code>
 and are refereed to as <code>hostmodes</code> and <code>innermodes</code> respectively.</p>
 <p>Polymodes are configured through <em>objects</em> of class <code>pm-polymode</code> which are
-named with <code>poly-NAME-polymode</code> scheme where <code>NAME</code> is the same as in the
-polymode function <code>poly-NAME-mode</code>. During initialization of the polymodes the
-<code>poly-NAME-polymode</code> object is cloned and stored in a buffer-local variable
+named with <code>poly-XYZ-polymode</code> scheme where <code>XYZ</code> is the same as in the
+polymode function <code>poly-XYZ-mode</code>. During initialization of the polymodes the
+<code>poly-XYZ-polymode</code> object is cloned and stored in a buffer-local variable
 <code>pm/polymode</code>. This object is shared across all sibling buffers.</p>
 <p><code>Chunks</code> and <code>chunkmodes</code> are different concepts. Chunk is a fragments of text
 and there might be multiple chunks of the same mode within a buffer. In
@@ -233,8 +233,8 @@ inherit the new value unless they explicitly overwrite that slot.</p>
 whose docstring contains a complete description of the class.</p>
 <h2 id="general-naming-conventions">General Naming Conventions</h2>
 <p>User facing functionality is named with <code>polymode-</code> prefix. Polymodes are named
-with <code>poly-NAME-mode</code> convention. Host, inner and polymode configuration objects
-are named <code>poly-NAME-hostmode</code>, <code>poly-NAME-innermode</code> and
+with <code>poly-XYZ-mode</code> convention. Host, inner and polymode configuration objects
+are named <code>poly-XYZ-hostmode</code>, <code>poly-XYZ-innermode</code> and
 <code>poly-name-polymode</code>. Classes, methods and developer-oriented API have <code>pm-</code>
 prefix.</p>
               
