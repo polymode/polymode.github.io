@@ -217,13 +217,14 @@ configuration. By far the most common keys are <code>:hostmode</code> specify th
 (symbol) of the <code>pm-host-chunkmode</code> object and <code>:innermodes</code> which is a list of
 names of <code>pm-inner-chunkmode</code> objects. See the documentation of
 <code>define-polymode</code> for further details.</p>
-<p>Polymode functions are more similar to minor-modes than major modes. Thus, you
-can call <code>(poly-NAME-mode t)</code> to install a polymode in emacs plain
-major-mode-hooks. Every <code>poly-NAME-mode</code> buffer (base or indirect) will have
-<code>poly-NAME-mode</code> minor mode activated in order to provide the "glue" interface
-between different chunks. If you want your commands to be available in all
-chunks bind them in <code>poly-NAME-mode-map</code> or directly in <code>poly-mode-map</code> which is
-the root map of all polymode maps.</p>
+<p>Most polymodes are designed to be used as major modes (i.e. in <code>auto-mode-alist</code>
+or buffer-local <code>mode:</code> cookie). Some polymodes (those with host's <code>:mode</code> slot
+set to <code>nil</code>) are explicitly designed to be used as minor modes.</p>
+<p>Internally, all polymode functions are in fact minor-modes. Every polymode
+buffer (base or indirect) will have <code>poly-NAME-mode</code> minor mode activated in
+order to provide the "glue" interface between different chunks. If you want your
+commands to be available in all chunks bind them in <code>poly-NAME-mode-map</code> or
+directly in <code>poly-mode-map</code> which is the root map of all polymode maps.</p>
 <p>A call to <code>define-polymode</code> creates 3 objects in the background:</p>
 <ul>
 <li><code>poly-NAME-mode</code> function which when can be used as major or minor mode.</li>
