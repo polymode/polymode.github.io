@@ -7,15 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
+  
   <link rel="shortcut icon" href="../favicon.ico">
   
   <title>Installation - Polymode</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-  <link href="../css/extra.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="../css/extra.css" rel="stylesheet" />
   
   <script>
     // Current page data
@@ -26,8 +27,8 @@
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/lisp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/lisp.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
   
 </head>
@@ -38,6 +39,7 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> Polymode</a>
         <div role="search">
@@ -48,67 +50,42 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-	<ul class="current">
-	  
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="..">Home</a>
-	    </li>
-          
-            <li class="toctree-l1 current">
-		
-    <a class="current" href="./">Installation</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#via-packageel">Via package.el</a></li>
-    
-
-    <li class="toctree-l2"><a href="#via-use-package">Via use-package</a></li>
-    
-
-    <li class="toctree-l2"><a href="#manually">Manually</a></li>
-    
-
-    <li class="toctree-l2"><a href="#activation-of-polymodes">Activation of Polymodes</a></li>
-    
-
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Installation</a>
+    <ul class="current">
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../usage/">Basic Usage</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../concepts/">Concepts</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../defining-polymodes/">Defining Polymodes</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../internals/">For Developers</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../screenshots/">Screenshots</a>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../licence/">Licence</a>
-	    </li>
-          
-        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../usage/">Basic Usage</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../concepts/">Concepts</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../defining-polymodes/">Defining Polymodes</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../internals/">For Developers</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../screenshots/">Screenshots</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../licence/">Licence</a>
+                    </li>
+                </ul>
       </div>
-      &nbsp;
+    </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -136,6 +113,7 @@
       
     </li>
   </ul>
+  
   <hr/>
 </div>
           <div role="main">
@@ -153,57 +131,48 @@
 and search for <code>poly-</code> prefix.</p>
 <p>To automatically install relevant polymodes put the following lines into
 <code>.emacs</code> for each polymode that you use:</p>
-<pre><code class="el">(unless (package-installed-p 'polymode)
+<pre><code class="language-el">(unless (package-installed-p 'polymode)
   (package-install 'poly-markdown))
 </code></pre>
-
 <p>You can pin packages to always install from MELPA stable like follows: </p>
-<pre><code class="el">(add-to-list 'package-pinned-packages '(poly-markdown . &quot;melpa-stable&quot;) t)
+<pre><code class="language-el">(add-to-list 'package-pinned-packages '(poly-markdown . &quot;melpa-stable&quot;) t)
 </code></pre>
-
 <h2 id="via-use-package">Via use-package</h2>
 <p><code>use-package</code> can also be used to install Polymode via the <code>package.el</code>.</p>
-<pre><code class="el">(use-package poly-markdown
+<pre><code class="language-el">(use-package poly-markdown
   :ensure t)
 </code></pre>
-
 <p>Or from MELPA stable:</p>
-<pre><code class="el">(use-package poly-markdown
+<pre><code class="language-el">(use-package poly-markdown
   :ensure t
   :pin melpa-stable)
 </code></pre>
-
 <p>For further configuration options with <code>use-package</code> see the official
 <a href="https://github.com/jwiegley/use-package">use-package repository</a> or <kbd>C-h v
 use-package [RET]</kbd>.</p>
 <h2 id="manually">Manually</h2>
-<pre><code class="sh">cd path/to/vc/dir
+<pre><code class="language-sh">cd path/to/vc/dir
 git clone https://github.com/polymode/polymode
 git clone https://github.com/polymode/poly-markdown
 ...
 </code></pre>
-
 <p>In <code>.emacs</code> add "polymode" directory and "polymode/modes" to the load path:</p>
-<pre><code class="el">(setq load-path
+<pre><code class="language-el">(setq load-path
       (append '(&quot;path/to/vc/dir/polymode/&quot;  &quot;path/to/vc/dir/poly-markdown/&quot;)
               load-path))
 </code></pre>
-
 <p>Require any polymode bundles that you are interested in. For example:</p>
-<pre><code class="el">(require 'poly-markdown)
+<pre><code class="language-el">(require 'poly-markdown)
 </code></pre>
-
 <h2 id="activation-of-polymodes">Activation of Polymodes</h2>
 <p>Polymodes are functions and can be used just like ordinary emacs modes.
 Particularly, activate them in files by either registering a file extension in
 <code>auto-mode-alist</code></p>
-<pre><code class="el">(add-to-list 'auto-mode-alist '(&quot;\\.md&quot; . poly-markdown-mode))
+<pre><code class="language-el">(add-to-list 'auto-mode-alist '(&quot;\\.md&quot; . poly-markdown-mode))
 </code></pre>
-
 <p>or by setting local major mode variable in the header of the file:</p>
-<pre><code class="nw">   // -*- mode: poly-noweb -*-
+<pre><code class="language-nw">   // -*- mode: poly-noweb -*-
 </code></pre>
-
 <p>Normally you won't need to setup modes yourself as polymode packages register
 their polymodes with the common extensions automatically. See the documentation
 of each polymode package.</p>
@@ -227,11 +196,11 @@ of each polymode package.</p>
   <div role="contentinfo">
     <!-- Copyright etc -->
     
-      <p>Copyright &copy; 2013-2018 Vitalie Spinu and contributors</p>
+      <p>Copyright &copy; 2013-2019 Vitalie Spinu</p>
     
   </div>
 
-  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
       
         </div>
@@ -241,7 +210,7 @@ of each polymode package.</p>
 
   </div>
 
-  <div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
           <a href="https://github.com/emacs-polymode/polymode/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
@@ -257,6 +226,11 @@ of each polymode package.</p>
     <script>var base_url = '..';</script>
     <script src="../js/theme.js" defer></script>
       <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
 
 </body>
 </html>
