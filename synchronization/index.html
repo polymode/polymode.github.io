@@ -10,7 +10,7 @@
   
   <link rel="shortcut icon" href="../favicon.ico">
   
-  <title>Installation - Polymode</title>
+  <title>Synchronization and Protection - Polymode</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../css/theme.css" />
@@ -20,8 +20,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Installation";
-    var mkdocs_page_input_path = "installation.md";
+    var mkdocs_page_name = "Synchronization and Protection";
+    var mkdocs_page_input_path = "synchronization.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -53,10 +53,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                     </li>
                 </ul>
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Installation</a>
-    <ul class="current">
-    </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
                     </li>
                 </ul>
                 <ul>
@@ -71,8 +69,10 @@
                     <li class="toctree-l1"><a class="reference internal" href="../defining-polymodes/">Defining Polymodes</a>
                     </li>
                 </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../synchronization/">Synchronization and Protection</a>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Synchronization and Protection</a>
+    <ul class="current">
+    </ul>
                     </li>
                 </ul>
                 <ul>
@@ -108,10 +108,10 @@
     
       
     
-    <li>Installation</li>
+    <li>Synchronization and Protection</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/emacs-polymode/polymode/edit/master/docs/installation.md"
+        <a href="https://github.com/emacs-polymode/polymode/edit/master/docs/synchronization.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -123,63 +123,57 @@
           <div role="main">
             <div class="section">
               
-                <p><em>!! Polymode required Emacs version 25.1 or higher!!</em></p>
-<h2 id="via-packageel">Via package.el</h2>
-<p>Polymode is available on the two major <code>package.el</code> community maintained repos -
-<a href="http://stable.melpa.org">MELPA Stable</a> and <a href="http://melpa.org">MELPA</a>.</p>
-<p>You can install Polymode, or more commonly a specific polymode, interactively</p>
-<p><kbd>M-x package-install [RET] polymode [RET] </kbd>
-<kbd>M-x package-install [RET] poly-markdown [RET] </kbd><br>
-...</p>
-<p>In order to see all available polymodes do <kbd>M-x list-packages [RET]</kbd>
-and search for <code>poly-</code> prefix.</p>
-<p>To automatically install relevant polymodes put the following lines into
-<code>.emacs</code> for each polymode that you use:</p>
-<pre><code class="language-el">(unless (package-installed-p 'polymode)
-  (package-install 'poly-markdown))
-</code></pre>
-<p>You can pin packages to always install from MELPA stable like follows: </p>
-<pre><code class="language-el">(add-to-list 'package-pinned-packages '(poly-markdown . &quot;melpa-stable&quot;) t)
-</code></pre>
-<h2 id="via-use-package">Via use-package</h2>
-<p><code>use-package</code> can also be used to install Polymode via the <code>package.el</code>.</p>
-<pre><code class="language-el">(use-package poly-markdown
-  :ensure t)
-</code></pre>
-<p>Or from MELPA stable:</p>
-<pre><code class="language-el">(use-package poly-markdown
-  :ensure t
-  :pin melpa-stable)
-</code></pre>
-<p>For further configuration options with <code>use-package</code> see the official
-<a href="https://github.com/jwiegley/use-package">use-package repository</a> or <kbd>C-h v
-use-package [RET]</kbd>.</p>
-<h2 id="manually">Manually</h2>
-<pre><code class="language-sh">cd path/to/vc/dir
-git clone https://github.com/polymode/polymode
-git clone https://github.com/polymode/poly-markdown
-...
-</code></pre>
-<p>In <code>.emacs</code> add "polymode" directory and "polymode/modes" to the load path:</p>
-<pre><code class="language-el">(setq load-path
-      (append '(&quot;path/to/vc/dir/polymode/&quot;  &quot;path/to/vc/dir/poly-markdown/&quot;)
-              load-path))
-</code></pre>
-<p>Require any polymode bundles that you are interested in. For example:</p>
-<pre><code class="language-el">(require 'poly-markdown)
-</code></pre>
-<h2 id="activation-of-polymodes">Activation of Polymodes</h2>
-<p>Polymodes are functions and can be used just like ordinary emacs modes.
-Particularly, activate them in files by either registering a file extension in
-<code>auto-mode-alist</code></p>
-<pre><code class="language-el">(add-to-list 'auto-mode-alist '(&quot;\\.md&quot; . poly-markdown-mode))
-</code></pre>
-<p>or by setting local major mode variable in the header of the file:</p>
-<pre><code class="language-nw">   // -*- mode: poly-noweb -*-
-</code></pre>
-<p>Normally you won't need to setup modes yourself as polymode packages register
-their polymodes with the common extensions automatically. See the documentation
-of each polymode package.</p>
+                <h2 id="protection">Protection</h2>
+<p>Sometimes you don't want some functions to run in indirect buffers (inner
+modes). Either you want them to run in the base (host mode) buffer or not to run
+at all.</p>
+<p>Polymode provides two generic protection functions which can be used as around advice:</p>
+<ul>
+<li><code>polymode-with-current-base-buffer</code> - run the function inside the base buffer</li>
+<li><code>polymode-inhibit-in-indirect-buffers</code> - don't run the function at all when invoked in indirect buffers</li>
+</ul>
+<h2 id="synchronizing-state-across-polymode-buffers">Synchronizing State Across Polymode Buffers</h2>
+<p>Each major mode has its own buffer. This is generally a good thing and leads to
+a highly composable and modularized design. Mainly because each modes does not
+have to deal with other modes.</p>
+<p>But there is a price to pay - some state and actions need to be shared across
+buffers and it's not always obvious what to synchronize and what not. Things
+like points, text properties, minor-modes, buffer-undo-lists, overlays are
+examples of the sate that needs to be synchronized.</p>
+<h3 id="variables-and-minor-modes">Variables and Minor Modes</h3>
+<p>Polymode automatically synchronizes stated defined in the following
+variables. Users and mode authors should add to these variables. In case of a
+generic use cases, please open an issue with a suggestion.</p>
+<ul>
+<li><code>polymode-move-these-vars-from-base-buffer</code> - Variables transferred from base buffer on switch to inner mode buffer.</li>
+<li><code>polymode-move-these-vars-from-old-buffer</code> - Variables transferred from old buffer to new buffer on buffer switch.</li>
+<li><code>polymode-move-these-minor-modes-from-base-buffer</code> - Minor modes "transferred" from the base (host-mode) buffer to inner-mode buffer on buffer switch.</li>
+<li><code>polymode-move-these-minor-modes-from-old-buffer</code> -  Minor modes "transferred" from the old buffer to new buffer on buffer switch.</li>
+</ul>
+<p>Polymode also runs the following hooks on each buffer switch. Use these hooks to
+synchronize your specific state if it cannot be done with the above generic
+variables.</p>
+<ul>
+<li><code>polymode-before-switch-buffer-hook</code></li>
+<li><code>polymode-after-switch-buffer-hook</code></li>
+</ul>
+<h3 id="hooks">Hooks</h3>
+<p>By default Emacs runs <code>pre-command-hook</code> and <code>post-command-hook</code> only in the
+original buffer. On a few occasions actions should propagate to other
+buffers. Most commonly such actions manipulate and update local state in the
+corresponding buffers.</p>
+<p>Polymode maintains a list of functions which, if present in the hook, should be
+run in other buffers.</p>
+<ul>
+<li><code>polymode-run-these-pre-commands-in-other-bufers</code>  - Commands to run in all other buffers regardless where command originated.</li>
+<li>
+<p><code>polymode-run-these-post-commands-in-other-bufers</code> - idem but for post-command-hook</p>
+</li>
+<li>
+<p><code>polymode-run-these-before-change-functions-in-other-bufers</code>  - Functions to run in all other buffers regardless where command originated.</p>
+</li>
+<li><code>polymode-run-these-after-change-functions-in-other-bufers</code> - idem but for after-change-fun</li>
+</ul>
               
             </div>
           </div>
@@ -187,10 +181,10 @@ of each polymode package.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../usage/" class="btn btn-neutral float-right" title="Basic Usage">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../internals/" class="btn btn-neutral float-right" title="For Developers">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../defining-polymodes/" class="btn btn-neutral" title="Defining Polymodes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -222,10 +216,10 @@ of each polymode package.</p>
         </span>
     
     
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../defining-polymodes/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../usage/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../internals/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
